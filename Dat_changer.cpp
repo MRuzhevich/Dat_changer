@@ -5,11 +5,11 @@
 
 using namespace std;
 
-vector<string> splitString(string spacestr) {
+vector<string> splitString(string tabstr) {
 	string nstr = "";
 	vector<string> words;
-	for (auto x : spacestr) {
-		if (x == ' ') {
+	for (auto x : tabstr) {
+		if (x == '\t') {
 			if (!nstr.empty()) {
 				words.push_back(nstr);
 				nstr = "";
@@ -30,29 +30,39 @@ vector<string> splitString(string spacestr) {
 
 int main()
 {
-	char buff[50];
+	char buff[100];
 	ifstream rfile("test1.dat");
 	ofstream wfile("test_new.dat");
+	if (rfile.is_open()) {
+		while (rfile.getline(buff, 100)) {
+			string first = "";
+			string second = "";
+			if (wfile.is_open()) {
+				wfile << buff << endl;
+				string str(buff);
+				
 
-	while (rfile.getline(buff, 50)) {
-		string first = "";
-		string second = "";
-		wfile << buff << endl;
-		string str(buff);
-		//cout << str << endl;
+				vector <string> vec = splitString(str);
+				if (vec.size() >= 1) {
+					first = vec[0];
+					second = vec[1];
 
-		vector <string> vec = splitString(str);
+					try {
+						float nfirst = stof(first);
+						float nsecond = stof(second);
 
-		first = vec[0];
-		second = vec[1];
-
-		int nfirst = stoi(first);
-		int nsecond = stoi(second);
-
-		cout << nfirst << endl;
-		cout << nsecond << endl;
+						cout << nfirst << '\t' << nsecond << endl;
+						
+					}
+					catch (const exception& e) {
+						cout << "Ошибка преобразования строки в число: " << e.what() << endl;
+					}
+				}
+				//else { cout << "<2" << endl; }
+			} else { cout << "File not opened" << endl; }
+		}
 	}
-
+	else { cout << "File not opened" << endl; }
 	wfile.close();
 
 	system("pause>0");
