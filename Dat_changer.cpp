@@ -2,9 +2,16 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <iomanip>
+#include <sstream>
 
 using namespace std;
 
+string stringFromFloat(float num) {
+	stringstream stream;
+	stream << fixed << setprecision(6) << num;
+	return stream.str();
+}
 
 vector<string> splitString(string tabstr) {
 	string nstr = "";
@@ -31,7 +38,7 @@ vector<string> splitString(string tabstr) {
 struct twoVectors {
 	vector<float> vecOfColumnFirst;
 	vector<float> vecOfColumnSecond;
-	
+
 };
 
 
@@ -56,9 +63,9 @@ twoVectors dataFromColumn() {
 				vecOfColumnSecond.push_back(nsecond);
 			}
 		}
-	} 
+	}
 	twoVectors twoVectorsOfColums = { vecOfColumnFirst, vecOfColumnSecond };
-	return twoVectorsOfColums; 
+	return twoVectorsOfColums;
 	;
 }
 
@@ -68,7 +75,7 @@ int main()
 	int k = 0;
 	char buff[100];
 	ifstream rfile("test1.dat");
-	
+
 	ofstream wfile("test_new.dat");
 
 	twoVectors twoVectorsOfColums = dataFromColumn();
@@ -84,7 +91,7 @@ int main()
 			string second = "";
 			float intens, energy;
 			if (wfile.is_open()) {
-				wfile << buff << endl;
+				wfile << buff << '\t';
 				string str(buff);
 
 
@@ -97,15 +104,17 @@ int main()
 						float nfirst = stof(first);
 						float nsecond = stof(second);
 
+						energy = 1240 / (8 * nfirst);
 
-		
 
-						//intens = nsecond - minsecond;
+						intens = nsecond - minFromSCol;
 
-						cout << nfirst << '\t' << nsecond << endl;
+						cout << nfirst << '\t' << nsecond << '\t' << energy << '\t' << intens << endl;
 
-						
-					
+
+
+						wfile << stringFromFloat(energy) << '\t' << stringFromFloat(intens) << endl;
+
 
 
 					}
